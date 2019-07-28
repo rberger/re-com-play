@@ -13,3 +13,9 @@
  ::set-active-panel
  (fn [db [_ active-panel]]
    (assoc db :active-panel active-panel)))
+
+(re-frame/reg-event-db
+ ::mouse-over?
+ (fn [db [_ mouse-over?]]
+   (assoc db :mouse-over? mouse-over?)))
+

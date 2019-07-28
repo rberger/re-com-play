@@ -11,3 +11,8 @@
  ::active-panel
  (fn [db _]
    (:active-panel db)))
+
+(re-frame/reg-sub
+ ::mouse-over?
+ (fn [db _]
+   (:mouse-over? db)))

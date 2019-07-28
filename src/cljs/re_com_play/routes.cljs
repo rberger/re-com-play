@@ -29,5 +29,9 @@
     (re-frame/dispatch [::events/set-active-panel :about-panel]))
 
 
+  (defroute "/introduction" []
+    (re-frame/dispatch [::events/set-active-panel :introduction]))
+
+
   ;; --------------------
   (hook-browser-navigation!))
