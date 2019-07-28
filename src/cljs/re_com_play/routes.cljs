@@ -22,7 +22,7 @@
   ;; --------------------
   ;; define routes here
   (defroute "/" []
-    (re-frame/dispatch [::events/set-active-panel :home-panel])
+    (re-frame/dispatch [::events/set-active-panel :introduction])
     )
 
   (defroute "/about" []

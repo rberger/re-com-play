@@ -95,6 +95,7 @@
 (defonce selected-tab-id (reagent/atom (if (or (nil? @id-store) (nil? (item-for-id @id-store tabs-definition)))
                                          (:id (first tabs-definition))
                                          @id-store)))  ;; id of the selected tab from local storage
+
 (defonce history (History.))
 (gevents/listen history EventType/NAVIGATE (fn [event] (secretary/dispatch! (.-token event))))
 (.setEnabled history true)
