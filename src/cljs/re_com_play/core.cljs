@@ -21,6 +21,7 @@
 
 (defn ^:export init []
   (routes/app-routes)
-  (re-frame/dispatch-sync [::events/initialize-db])
+  (js/console.log (str "core views/tabs-definition: " views/tabs-definition))
+  (re-frame/dispatch-sync [::events/initialize-db views/tabs-definition])
   (dev-setup)
   (mount-root))

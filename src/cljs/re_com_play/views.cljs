@@ -3,7 +3,6 @@
    [goog.events :as gevents]
    [re-com-play.events :as events]
    [reagent.core :as reagent]
-   [alandipert.storage-atom :refer [local-storage]]
    [re-frame.core :as re-frame]
    [re-com.core :refer [h-box v-box box gap line scroller border label p title alert-box h-split hyperlink-href] :refer-macros [handler-fn]]
    [re-com.util :refer [get-element-by-id item-for-id]]
@@ -23,7 +22,7 @@
    {:id :about           :level :major :label "About"       :panel about/panel}])
 
 (defn set-mouse-over [value]
-  (js/console.log  value)
+  (js/console.log (str "set-mouse-over: " value))
   (re-frame/dispatch [::events/mouse-over? value]))
 
 (defn set-active-panel [tab-id]
@@ -32,11 +31,13 @@
 
 (defn nav-item
   []
-  (let [mouse-over? (re-frame/subscribe [::subs/mouse-over?])]
+  (let [foo "hello"]
     (fn [tab selected-tab-id]
       (let [selected?   (= @selected-tab-id (:id tab))
             is-major?  (= (:level tab) :major)
+            mouse-over? (re-frame/subscribe [::subs/mouse-over?])
             has-panel? (some? (:panel tab))]
+        (js/console.log (str "nav-item selected-tab-id: " @selected-tab-id " selected?: " selected? " has-panel?: " has-panel? " mouse-over?: " @mouse-over?))
         [:div
          {:style         {;:width            "150px"
                           :white-space      "nowrap"
@@ -50,7 +51,7 @@
                           :color            (if has-panel? (when selected? "#111") "#888")
                           :background-color (if (or
                                                   (= @selected-tab-id (:id tab))
-                                                  mouse-over?) "#eaeaea")}
+                                                  @mouse-over?) "#eaeaea")}
 
           :on-mouse-over (handler-fn (when has-panel? (set-mouse-over true)))
           :on-mouse-out  (handler-fn (set-mouse-over false))
@@ -67,7 +68,9 @@
      :style    {:background-color "#fcfcfc"}
      ;:size    "1"
      :children (for [tab tabs-definition]
-                 [nav-item tab selected-tab-id])])
+                 (do
+                   (js/console.log (str "for tab: " tab " @selected-tab-id: " @selected-tab-id))
+                   [nav-item tab selected-tab-id]))])
 
 (defn re-com-title-box
   []
@@ -91,20 +94,15 @@
              :heading    "Only Tested On Chrome"
              :body       "re-com should work on all modern browsers, but there might be dragons!"]])
 
-(defonce id-store        (local-storage (atom nil) ::id-store))
-(defonce selected-tab-id (reagent/atom (if (or (nil? @id-store) (nil? (item-for-id @id-store tabs-definition)))
-                                         (:id (first tabs-definition))
-                                         @id-store)))  ;; id of the selected tab from local storage
-
 (defonce history (History.))
 (gevents/listen history EventType/NAVIGATE (fn [event] (secretary/dispatch! (.-token event))))
 (.setEnabled history true)
 
 ;; main
 (defn main-panel []
-  (let [active-panel (re-frame/subscribe [::subs/active-panel])]
+  (let [active-panel (re-frame/subscribe [::subs/active-panel])
+        selected-tab-id (re-frame/subscribe [::subs/selected-tab-id])]
     (js/console.log (str "main active-panel: " @active-panel))
-    ;(re-frame/dispatch [::events/set-active-panel active-panel])
     [h-split
        ;; Outer-most box height must be 100% to fill the entrie client height.
        ;; This assumes that height of <body> is itself also set to 100%.
@@ -120,7 +118,7 @@
                  :child [v-box
                          :size "1"
                          :children [[re-com-title-box]
-                                    [left-side-nav-bar selected-tab-id]]]]
+                                    [left-side-nav-bar active-panel]]]]
        :panel-2 [scroller
                  :attr  {:id "right-panel"}
                  :child [v-box

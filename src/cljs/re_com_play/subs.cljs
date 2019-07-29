@@ -16,3 +16,8 @@
  ::mouse-over?
  (fn [db _]
    (:mouse-over? db)))
+
+(re-frame/reg-sub
+ ::selected-tab-id
+ (fn [db _]
+   (:selected-tab-id db)))
