@@ -22,15 +22,15 @@
   ;; --------------------
   ;; define routes here
   (defroute "/" []
-    (re-frame/dispatch [::events/set-active-panel :introduction])
+    (re-frame/dispatch [::events/set-selected-tab-id :introduction])
     )
 
   (defroute "/about" []
-    (re-frame/dispatch [::events/set-active-panel :about-panel]))
+    (re-frame/dispatch [::events/set-selected-tab-id :about-panel]))
 
 
   (defroute "/introduction" []
-    (re-frame/dispatch [::events/set-active-panel :introduction]))
+    (re-frame/dispatch [::events/set-selected-tab-id :introduction]))
 
 
   ;; --------------------

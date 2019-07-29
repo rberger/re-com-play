@@ -8,9 +8,9 @@
    (:name db)))
 
 (re-frame/reg-sub
- ::active-panel
+ ::selected-tab-id
  (fn [db _]
-   (:active-panel db)))
+   (:selected-tab-id db)))
 
 (re-frame/reg-sub
  ::mouse-over?

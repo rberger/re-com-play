@@ -10,10 +10,9 @@
    db/default-db))
 
 (re-frame/reg-event-db
- ::set-active-panel
- (fn [db [_ active-panel]]
-   (assoc db :selected-tab-id active-panel)
-   (assoc db :active-panel active-panel)))
+ ::set-selected-tab-id
+ (fn [db [_ select-tab-id]]
+   (assoc db :selected-tab-id select-tab-id)))
 
 (re-frame/reg-event-db
  ::mouse-over?

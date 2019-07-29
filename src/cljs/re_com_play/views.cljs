@@ -25,9 +25,9 @@
   (js/console.log (str "set-mouse-over: " value))
   (re-frame/dispatch [::events/mouse-over? value]))
 
-(defn set-active-panel [tab-id]
+(defn set-selected-tab-id [tab-id]
   (js/console.log  (str "tab: " tab-id))
-  (re-frame/dispatch [::events/set-active-panel tab-id]))
+  (re-frame/dispatch [::events/set-selected-tab-id tab-id]))
 
 (defn nav-item
   []
@@ -56,7 +56,7 @@
           :on-mouse-over (handler-fn (when has-panel? (set-mouse-over true)))
           :on-mouse-out  (handler-fn (set-mouse-over false))
           :on-click      (handler-fn (when has-panel?
-                                       (set-active-panel (:id tab))
+                                       (set-selected-tab-id (:id tab))
                                        (scroll-to-top (get-element-by-id "right-panel"))))}
          [:span (:label tab)]]))))
 
@@ -100,8 +100,8 @@
 
 ;; main
 (defn main-panel []
-  (let [active-panel (re-frame/subscribe [::subs/active-panel])]
-    (js/console.log (str "main active-panel: " @active-panel))
+  (let [selected-tab-id (re-frame/subscribe [::subs/selected-tab-id])]
+    (js/console.log (str "main selected-tab-id: " @selected-tab-id))
     [h-split
        ;; Outer-most box height must be 100% to fill the entrie client height.
        ;; This assumes that height of <body> is itself also set to 100%.
@@ -117,7 +117,7 @@
                  :child [v-box
                          :size "1"
                          :children [[re-com-title-box]
-                                    [left-side-nav-bar active-panel]]]]
+                                    [left-side-nav-bar selected-tab-id]]]]
        :panel-2 [scroller
                  :attr  {:id "right-panel"}
                  :child [v-box
@@ -126,4 +126,4 @@
                                     [box
                                      :padding "0px 0px 0px 50px"
                                      ;; the tab panel to show, for the selected tab
-                                     :child [(:panel (item-for-id @active-panel tabs-definition))]]]]]]))
+                                     :child [(:panel (item-for-id @selected-tab-id tabs-definition))]]]]]]))
