@@ -6,9 +6,8 @@
 
 (re-frame/reg-event-db
  ::initialize-db
- (fn [_ tabs-definition]
-   (js/console.log (str "initialize-db tabs-definition: " (second tabs-definition)))
-   (db/init-db (second tabs-definition))))
+ (fn [_ _]
+   db/default-db))
 
 (re-frame/reg-event-db
  ::set-active-panel

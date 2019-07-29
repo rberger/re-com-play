@@ -100,8 +100,7 @@
 
 ;; main
 (defn main-panel []
-  (let [active-panel (re-frame/subscribe [::subs/active-panel])
-        selected-tab-id (re-frame/subscribe [::subs/selected-tab-id])]
+  (let [active-panel (re-frame/subscribe [::subs/active-panel])]
     (js/console.log (str "main active-panel: " @active-panel))
     [h-split
        ;; Outer-most box height must be 100% to fill the entrie client height.
