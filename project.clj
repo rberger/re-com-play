@@ -4,7 +4,6 @@
                  [reagent "0.8.1"]
                  [re-frame "0.10.8"]
                  [re-com "2.5.0"]
-                 [alandipert/storage-atom "2.0.1"]
                  [secretary "1.2.3"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]]

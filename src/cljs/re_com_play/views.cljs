@@ -2,7 +2,6 @@
   (:require
    [goog.events :as gevents]
    [re-com-play.events :as events]
-   [reagent.core :as reagent]
    [re-frame.core :as re-frame]
    [re-com.core :refer [h-box v-box box gap line scroller border label p title alert-box h-split hyperlink-href] :refer-macros [handler-fn]]
    [re-com.util :refer [get-element-by-id item-for-id]]
@@ -22,22 +21,18 @@
    {:id :about           :level :major :label "About"       :panel about/panel}])
 
 (defn set-mouse-over [value]
-  (js/console.log (str "set-mouse-over: " value))
   (re-frame/dispatch [::events/mouse-over? value]))
 
 (defn set-selected-tab-id [tab-id]
-  (js/console.log  (str "tab: " tab-id))
   (re-frame/dispatch [::events/set-selected-tab-id tab-id]))
 
 (defn nav-item
   []
-  (let [foo "hello"]
     (fn [tab selected-tab-id]
       (let [selected?   (= @selected-tab-id (:id tab))
             is-major?  (= (:level tab) :major)
             mouse-over? (re-frame/subscribe [::subs/mouse-over?])
             has-panel? (some? (:panel tab))]
-        (js/console.log (str "nav-item selected-tab-id: " @selected-tab-id " selected?: " selected? " has-panel?: " has-panel? " mouse-over?: " @mouse-over?))
         [:div
          {:style         {;:width            "150px"
                           :white-space      "nowrap"
@@ -58,7 +53,7 @@
           :on-click      (handler-fn (when has-panel?
                                        (set-selected-tab-id (:id tab))
                                        (scroll-to-top (get-element-by-id "right-panel"))))}
-         [:span (:label tab)]]))))
+         [:span (:label tab)]])))
 
 
 (defn left-side-nav-bar
@@ -68,9 +63,7 @@
      :style    {:background-color "#fcfcfc"}
      ;:size    "1"
      :children (for [tab tabs-definition]
-                 (do
-                   (js/console.log (str "for tab: " tab " @selected-tab-id: " @selected-tab-id))
-                   [nav-item tab selected-tab-id]))])
+                   [nav-item tab selected-tab-id])])
 
 (defn re-com-title-box
   []
@@ -101,7 +94,6 @@
 ;; main
 (defn main-panel []
   (let [selected-tab-id (re-frame/subscribe [::subs/selected-tab-id])]
-    (js/console.log (str "main selected-tab-id: " @selected-tab-id))
     [h-split
        ;; Outer-most box height must be 100% to fill the entrie client height.
        ;; This assumes that height of <body> is itself also set to 100%.
