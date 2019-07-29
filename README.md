@@ -1,6 +1,17 @@
 # re-com-play
 
-A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
+Get the basic re-com demo layout with nabber working in a pure re-frame app
+
+Recreates the same nav-bar setup as in the re-com demo but with a more re-frame
+approach (no reagent/atoms and using re-frame subs/events for everything)
+
+Started from using the re-frame leinigen template:
+
+```
+lein new re-frame re-com-play +re-com +cider +routes +re-frisk
+```
+
+And then incorporated the nav-bar stuff from the re-com demo.
 
 ## Development Mode
 
